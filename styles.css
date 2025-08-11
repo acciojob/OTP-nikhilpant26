@@ -9,13 +9,6 @@ body {
       height: 100vh;
       margin: 0;
     }
- form {
-      text-align: center;
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
 #verification_heading {
       font-size: 26px;
       margin-bottom: 10px;

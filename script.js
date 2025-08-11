@@ -1,74 +1,49 @@
 const inputs = document.querySelectorAll('.code');
-    const form = document.getElementById('otpForm');
 
-    // Auto focus next input on input
     inputs.forEach((input, index) => {
       input.addEventListener('input', (e) => {
         const value = e.target.value;
-
-        // Allow only digits
-        if (!/^\d$/.test(value)) {
-          e.target.value = '';
-          return;
-        }
-
-        // Move to next field
-        if (index < inputs.length - 1) {
+        if (value.length === 1 && index < inputs.length - 1) {
           inputs[index + 1].focus();
         }
       });
 
-      // Handle backspace
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace') {
           if (input.value === '') {
             if (index > 0) {
               inputs[index - 1].focus();
               inputs[index - 1].value = '';
-              e.preventDefault();
             }
           } else {
             input.value = '';
           }
+          e.preventDefault();
         } else if (e.key >= '0' && e.key <= '9') {
-          // Clear value before typing a new digit (in case of auto-fill)
-          input.value = '';
+          // Allow digit input
+        } else if (e.key !== 'Tab') {
+          e.preventDefault(); // Prevent non-numeric characters
         }
       });
 
-      // Handle paste
       input.addEventListener('paste', (e) => {
         e.preventDefault();
-        const pasteData = e.clipboardData.getData('text').trim();
-        if (!/^\d{6}$/.test(pasteData)) return;
-
-        for (let i = 0; i < inputs.length; i++) {
-          inputs[i].value = pasteData[i];
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        pasteData.split('').forEach((char, i) => {
+          if (i < inputs.length) {
+            inputs[i].value = char;
+          }
+        });
+        const filled = Math.min(pasteData.length, inputs.length);
+        if (filled < inputs.length) {
+          inputs[filled].focus();
+        } else {
+          inputs[inputs.length - 1].focus();
         }
-
-        inputs[inputs.length - 1].focus();
       });
     });
 
-    // Focus on first input on load
+    // Autofocus first input on page load
     window.addEventListener('load', () => {
       inputs[0].focus();
-    });
-
-    // Handle submit
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const otp = Array.from(inputs)
-        .map(input => input.value)
-        .join('');
-
-      if (otp.length !== 6) {
-        alert("Please enter all 6 digits of the OTP.");
-        return;
-      }
-
-      console.log("Submitted OTP:", otp);
-
-
     });
