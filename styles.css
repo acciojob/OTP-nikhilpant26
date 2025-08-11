@@ -38,14 +38,3 @@ body {
       outline: none;
       box-shadow: 0 0 5px #007bff33;
     }
- button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
- button:hover {
-      background-color: #0056b3;
